@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08e0499677a8462186d2de661b53ccc6, type: 3}
   m_Name: YellowColor
   m_EditorClassIdentifier: 
+  <Id>k__BackingField: 4
   <Price>k__BackingField: 100
   <Color>k__BackingField:
     serializedVersion: 2
