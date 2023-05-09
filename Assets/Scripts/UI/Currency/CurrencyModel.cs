@@ -7,12 +7,13 @@
 
 namespace UI.Currency {
 	public sealed class CurrencyModel {
-		public int CurrentGold { get; private set; }
+		public int CurrentGold { get; set; }
 		
 		#region Public
 
 		public void UpdateCurrency(int amount) {
 			this.CurrentGold += amount;
+			UserSettings.Instance.Gold = this.CurrentGold;
 		}
 
 		#endregion
