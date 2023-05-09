@@ -11,6 +11,9 @@ namespace Shop {
 	[CreateAssetMenu(fileName = "Item", menuName = "Shop/Item", order = 1)]
 	public class ShopItem : ScriptableObject {
 		[field:SerializeField]
+		public int Id { get; private set; }
+		
+		[field:SerializeField]
 		public int Price { get; private set; }
 		
 		[field:SerializeField]
