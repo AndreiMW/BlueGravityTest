@@ -12,7 +12,9 @@ public sealed class UserSettings {
 	public static UserSettings Instance => s_instance ??= new UserSettings();
 	
 	private const string CURRENCY_KEY = "Currency";
+	private const string INVENTORY = "Inventory";
 	public int Gold { get; set;}
+	public string Inventory { get; set; }
 
 	#region Constructor
 	
@@ -26,6 +28,7 @@ public sealed class UserSettings {
 
 	public void SaveSettings() {
 		PlayerPrefs.SetInt(CURRENCY_KEY,this.Gold);
+		PlayerPrefs.SetString(INVENTORY,this.Inventory);
 	}
 
 	#endregion
@@ -34,6 +37,7 @@ public sealed class UserSettings {
 
 	private void LoadSettings() {
 		this.Gold = PlayerPrefs.GetInt(CURRENCY_KEY, 1000);
+		this.Inventory = PlayerPrefs.GetString(INVENTORY, string.Empty);
 	}
 	
 	#endregion
