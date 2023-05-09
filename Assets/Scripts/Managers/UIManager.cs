@@ -5,13 +5,14 @@
  * Copyright (c) 2023 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+using DG.Tweening;
 using TMPro;
 
 using Player;
+using UI.Currency;
 using Views;
 
 
@@ -25,14 +26,28 @@ namespace Managers {
 
 		[SerializeField]
 		private ShopView _shopView;
+
+		[SerializeField]
+		private CurrencyView _currencyView;
+		public CurrencyPresenter CurrencyPresenter { get; private set; }
+		
+		[field: SerializeField]
+		public InventoryView InventoryView { get; private set; }
+		
 		
 		private Actions _actions;
 		private bool _isShopVisible;
+		private bool _isInventoryVisible;
 
 		private void Awake() {
 			PlayerController.Instance.InShopRange += this.HandleInShopRange;
+			
 			this._actions = new Actions();
 			this._actions.Player.Interact.Enable();
+			this._actions.Player.Inventory.Enable();
+			this._actions.Player.Inventory.performed += this.HandleInventoryVisibility;
+			
+			this.CurrencyPresenter = new CurrencyPresenter(this._currencyView);
 		}
 
 		private void OnDestroy() {
@@ -73,6 +88,17 @@ namespace Managers {
 				this._shopView.Show(0.2f);
 				this.HideShopKeeperInteractText();
 				this._isShopVisible = true;
+			}
+		}
+
+		private void HandleInventoryVisibility(InputAction.CallbackContext context) {
+			if (context.phase == InputActionPhase.Performed) {
+				this._isInventoryVisible = !this._isInventoryVisible;
+				if (this._isInventoryVisible) {
+					this.InventoryView.Show(0.2f);
+				} else {
+					this.InventoryView.Hide(0.2f);
+				}
 			}
 		}
 		
