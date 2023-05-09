@@ -5,13 +5,21 @@
  * Copyright (c) 2023 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
-using PlayerMovingStates;
+using System;
+
 using UnityEngine;
+
+using PlayerMovingStates;
 
 namespace Player {
 	public class PlayerController : MonoBehaviour {
 		private static PlayerController s_instance;
 		public static PlayerController Instance => s_instance ??= FindObjectOfType<PlayerController>();
+		
+		private Animator _animator;
+
+		private Actions _actions;
+		public event Action<bool> InShopRange;
 		
 		#region States
 		
@@ -24,20 +32,38 @@ namespace Player {
 		
 		#endregion
 		
-		private Animator _animator;
-		
 		#region Lifecycle
 
 		private void Awake() {
 			this._animator = GetComponent<Animator>();
+			
 			this._currentState = this.IdleState;
 			this._currentState.EnterState(this);
+			
+			this._actions = new Actions();
+			this._actions.Player.Enable();
 		}
 
 		private void OnDestroy() {
 			s_instance = null;
 		}
 
+		#endregion
+		
+		#region Collision
+		
+		private void OnCollisionEnter2D(Collision2D col) {
+			if (col.collider.CompareTag(Tags.SHOP_TAG)) {
+				this.InShopRange?.Invoke(true);
+			}
+		}
+
+		private void OnCollisionExit2D(Collision2D other) {
+			if (other.collider.CompareTag(Tags.SHOP_TAG)) {
+				this.InShopRange?.Invoke(false);
+			}
+		}
+		
 		#endregion
 		
 		#region Public
