@@ -41,7 +41,9 @@ namespace Managers {
 		/// </summary>
 		/// <param name="item">The item to add.</param>
 		public void AddItemToInventory(ShopItem item) {
-			this._ownedItems.Items.Add(new ShopItemData{Id = item.Id, Color = item.Color});
+			ShopItemData data = new ShopItemData { Id = item.Id, Color = item.Color };
+			this._ownedItems.Items.Add(data);
+			UIManager.Instance.InventoryView.AddItem(data);
 			this.OwnedItemsToJson();
 		}
 

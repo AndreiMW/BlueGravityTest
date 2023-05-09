@@ -28,6 +28,15 @@ namespace Views {
 				button.Init(shopItem);
 			}
 		}
+
+		/// <summary>
+		/// Add item to the inventory view.
+		/// </summary>
+		/// <param name="item">The item to add.</param>
+		public void AddItem(ShopItemData item) {
+			InventoryItemButton button = GameObject.Instantiate(this._inventoryButtonPrefab, this._inventoryItemsParent);
+			button.Init(item);
+		}
 		
 		#endregion
 	}
