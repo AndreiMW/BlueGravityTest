@@ -16,7 +16,7 @@ namespace UI.Currency {
 
 		#region Public
 
-		public void UpdateCurrencyAmount(int currencyAmount) {
+		public void UpdateGoldAmount(int currencyAmount) {
 			this._currencyText.SetText(currencyAmount.ToString());
 		}
 		

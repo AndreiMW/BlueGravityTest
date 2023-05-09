@@ -11,7 +11,7 @@ namespace UI.Currency {
 		
 		#region Public
 
-		public void UpdateCurrency(int amount) {
+		public void UpdateGold(int amount) {
 			this.CurrentGold += amount;
 			UserSettings.Instance.Gold = this.CurrentGold;
 		}
