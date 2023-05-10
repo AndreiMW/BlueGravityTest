@@ -20,10 +20,13 @@ namespace UI.Buttons {
 
 		[SerializeField]
 		private TMP_Text _priceText;
+		
+		public ShopItem Item { get; private set; }
 
 		#region Init
 
 		public void Init(ShopItem item) {
+			this.Item = item;
 			this._priceText.SetText(item.Price.ToString());
 			this._outfitColorImage.color = item.Color;
 
@@ -38,6 +41,14 @@ namespace UI.Buttons {
 		public void SetAsOwned() {
 			this.Interactable = false;
 			this._priceText.SetText("Owned");
+		}
+
+		/// <summary>
+		/// Set the price text.
+		/// </summary>
+		public void SetPrice() {
+			this.Interactable = true;
+			this._priceText.SetText(this.Item.Price.ToString());
 		}
 		
 		#endregion
