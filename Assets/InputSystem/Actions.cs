@@ -71,6 +71,15 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quit"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9250a1f-b1a3-48fc-82be-3b04139acd00"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +181,17 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                     ""action"": ""RemoveGold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0a5de77-23ec-48d5-b970-47dbdc5f289c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -191,6 +211,7 @@ public partial class @Actions : IInputActionCollection2, IDisposable
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_AddGold = m_Player.FindAction("AddGold", throwIfNotFound: true);
         m_Player_RemoveGold = m_Player.FindAction("RemoveGold", throwIfNotFound: true);
+        m_Player_Quit = m_Player.FindAction("Quit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -255,6 +276,7 @@ public partial class @Actions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_AddGold;
     private readonly InputAction m_Player_RemoveGold;
+    private readonly InputAction m_Player_Quit;
     public struct PlayerActions
     {
         private @Actions m_Wrapper;
@@ -264,6 +286,7 @@ public partial class @Actions : IInputActionCollection2, IDisposable
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @AddGold => m_Wrapper.m_Player_AddGold;
         public InputAction @RemoveGold => m_Wrapper.m_Player_RemoveGold;
+        public InputAction @Quit => m_Wrapper.m_Player_Quit;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -288,6 +311,9 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                 @RemoveGold.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveGold;
                 @RemoveGold.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveGold;
                 @RemoveGold.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveGold;
+                @Quit.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
+                @Quit.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
+                @Quit.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -307,6 +333,9 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                 @RemoveGold.started += instance.OnRemoveGold;
                 @RemoveGold.performed += instance.OnRemoveGold;
                 @RemoveGold.canceled += instance.OnRemoveGold;
+                @Quit.started += instance.OnQuit;
+                @Quit.performed += instance.OnQuit;
+                @Quit.canceled += instance.OnQuit;
             }
         }
     }
@@ -327,5 +356,6 @@ public partial class @Actions : IInputActionCollection2, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnAddGold(InputAction.CallbackContext context);
         void OnRemoveGold(InputAction.CallbackContext context);
+        void OnQuit(InputAction.CallbackContext context);
     }
 }
