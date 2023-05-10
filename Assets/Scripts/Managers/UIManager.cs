@@ -48,7 +48,12 @@ namespace Managers {
 			this._actions = new Actions();
 			this._actions.Player.Interact.Enable();
 			this._actions.Player.Inventory.Enable();
+			this._actions.Player.AddGold.Enable();
+			this._actions.Player.RemoveGold.Enable();
+			
 			this._actions.Player.Inventory.performed += this.HandleInventoryVisibility;
+			this._actions.Player.AddGold.performed += this.HandleGoldAdding;
+			this._actions.Player.RemoveGold.performed += this.HandleGoldRemove;
 			
 			this.CurrencyPresenter = new CurrencyPresenter(this._currencyView);
 
@@ -110,6 +115,17 @@ namespace Managers {
 			}
 		}
 
+		private void HandleGoldAdding(InputAction.CallbackContext context) {
+			if (context.phase == InputActionPhase.Performed) {
+				this.CurrencyPresenter.UpdateGoldAmount(100);
+			}
+		}
+
+		private void HandleGoldRemove(InputAction.CallbackContext context) {
+			if (context.phase == InputActionPhase.Performed) {
+				this.CurrencyPresenter.UpdateGoldAmount(-100);
+			}
+		}
 		private void HandleBuyPressed() {
 			this._shopView.Show(0.2f);
 			this._isShopVisible = true;
