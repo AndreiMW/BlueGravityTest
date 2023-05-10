@@ -22,7 +22,7 @@ namespace Views {
 
 		#region Lifecycle
 
-		private void Awake() {
+		private void Start() {
 			this._buyButton.SetListener(this.HandleBuyPressed);
 			this._sellButton.SetListener(this.HandleSellPressed);
 		}
