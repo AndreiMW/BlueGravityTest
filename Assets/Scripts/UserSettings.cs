@@ -1,3 +1,4 @@
+using Managers;
 using UnityEngine;
 
 /**
@@ -13,8 +14,10 @@ public sealed class UserSettings {
 	
 	private const string CURRENCY_KEY = "Currency";
 	private const string INVENTORY = "Inventory";
+	private const string CURRENT_EQUIPPED_ITEM = "CurrentEquipped";
 	public int Gold { get; set;}
 	public string Inventory { get; set; }
+	public int CurrentEquippedItemId { get; set; }
 
 	#region Constructor
 	
@@ -29,6 +32,7 @@ public sealed class UserSettings {
 	public void SaveSettings() {
 		PlayerPrefs.SetInt(CURRENCY_KEY,this.Gold);
 		PlayerPrefs.SetString(INVENTORY,this.Inventory);
+		PlayerPrefs.SetInt(CURRENT_EQUIPPED_ITEM,this.CurrentEquippedItemId);
 	}
 
 	#endregion
@@ -36,7 +40,8 @@ public sealed class UserSettings {
 	#region Load
 
 	private void LoadSettings() {
-		this.Gold = PlayerPrefs.GetInt(CURRENCY_KEY, 1000);
+		this.Gold = PlayerPrefs.GetInt(CURRENCY_KEY, 15000);
+		this.CurrentEquippedItemId = PlayerPrefs.GetInt(CURRENT_EQUIPPED_ITEM, -1);
 		this.Inventory = PlayerPrefs.GetString(INVENTORY, string.Empty);
 	}
 	
