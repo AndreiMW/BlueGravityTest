@@ -6,6 +6,8 @@
  */
 
 
+using System;
+using System.Collections.Generic;
 using Managers;
 using UnityEngine;
 
@@ -21,14 +23,18 @@ namespace Views {
 		private Transform _shopItemsParent;
 
 		private ShopItem[] _items;
-		
+
+		private HashSet<ShopItemButton> _buttons;
+
 		#region Lifecycle
 
 		private void Awake() {
 			this._items = Resources.LoadAll<ShopItem>("Scriptables");
+			this._buttons = new HashSet<ShopItemButton>();
 
 			foreach (ShopItem shopItem in this._items) {
 				ShopItemButton button = GameObject.Instantiate(this._shopItemButtonPrefab, _shopItemsParent);
+				this._buttons.Add(button);
 				button.Init(shopItem);
 				button.SetListener(ShopButtonListener);
 
@@ -48,6 +54,22 @@ namespace Views {
 			}
 
 			this._items = null;
+		}
+
+		#endregion
+		
+		#region Public
+		
+		public new void Show(float duration, Action completionCallback = null) {
+			base.Show(duration, completionCallback);
+
+			foreach (ShopItemButton shopItemButton in this._buttons) {
+				if (InventoryManager.Instance.CheckIfOwned((shopItemButton.Item))) {
+					shopItemButton.SetAsOwned();
+				} else {
+					shopItemButton.SetPrice();
+				}
+			}
 		}
 		
 		#endregion
