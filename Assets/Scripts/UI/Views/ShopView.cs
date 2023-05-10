@@ -21,6 +21,9 @@ namespace Views {
 
 		[SerializeField]
 		private Transform _shopItemsParent;
+		
+		[SerializeField]
+		private BaseButton _closeButton;
 
 		private ShopItem[] _items;
 
@@ -29,6 +32,7 @@ namespace Views {
 		#region Lifecycle
 
 		private void Awake() {
+			this._closeButton.SetListener(()=> this.Hide(0.2f));
 			this._items = Resources.LoadAll<ShopItem>("Scriptables");
 			this._buttons = new HashSet<ShopItemButton>();
 

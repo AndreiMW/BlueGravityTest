@@ -20,10 +20,17 @@ namespace Views {
 
 		[SerializeField]
 		private Transform _inventoryItemsParent;
+		
+		[SerializeField]
+		private BaseButton _closeButton;
 
 		public bool ShouldSellItems { get; private set; }
 		
 		#region Lifecycle
+
+		private void Awake() {
+			this._closeButton.SetListener(()=> this.Hide(0.2f));
+		}
 
 		public void InitInventory(List<InventoryItem> items) {
 			foreach (InventoryItem shopItem in items) {
