@@ -42,10 +42,14 @@ namespace UI.Buttons {
 				if (UIManager.Instance.InventoryView.ShouldSellItems) {
 					InventoryManager.Instance.RemoveFromInventory(this._data);
 					UIManager.Instance.CurrencyPresenter.UpdateGoldAmount(this._price);
+					if (OutfitManager.Instance.CurrentlyEquipped == this._data) {
+						OutfitManager.Instance.SetOriginalColor();
+					}
 					Destroy(this.gameObject);
 				} else {
-					Debug.Log("Equip");
+					OutfitManager.Instance.ChangeOutfitColor(this._data);
 				}
+				UIManager.Instance.InventoryView.Hide(0.2f);
 			}
 		}
 		
