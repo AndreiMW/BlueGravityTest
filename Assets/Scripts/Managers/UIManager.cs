@@ -49,19 +49,17 @@ namespace Managers {
 			this._actions.Player.Inventory.Enable();
 			this._actions.Player.AddGold.Enable();
 			this._actions.Player.RemoveGold.Enable();
+			this._actions.Player.Quit.Enable();
 			
 			this._actions.Player.Inventory.performed += this.HandleInventoryVisibility;
 			this._actions.Player.AddGold.performed += this.HandleGoldAdding;
 			this._actions.Player.RemoveGold.performed += this.HandleGoldRemove;
-			
+			this._actions.Player.Quit.performed += this.HandleQuitButton;
+
 			this.CurrencyPresenter = new CurrencyPresenter(this._currencyView);
 
 			this._buyOrSellView.OnBuyPressed += this.HandleBuyPressed;
 			this._buyOrSellView.OnSellPressed += this.HandleSellPressed;
-		}
-
-		private void OnDestroy() {
-			PlayerController.Instance.InShopRange -= this.HandleInShopRange;
 		}
 
 		#region Public
@@ -121,6 +119,9 @@ namespace Managers {
 
 		private void HandleGoldRemove(InputAction.CallbackContext context) {
 			if (context.phase == InputActionPhase.Performed) {
+				if (this.CurrencyPresenter.GoldAmount == 0) {
+					return;
+				}
 				this.CurrencyPresenter.UpdateGoldAmount(-100);
 			}
 		}
@@ -131,6 +132,12 @@ namespace Managers {
 		
 		private void HandleSellPressed() {
 			this.InventoryView.Show(true,0.2f);
+		}
+
+		private void HandleQuitButton(InputAction.CallbackContext context) {
+			if (context.phase == InputActionPhase.Performed) {
+				Application.Quit();
+			}
 		}
 		
 		#endregion
