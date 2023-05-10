@@ -18,16 +18,16 @@ namespace Managers {
 		private static InventoryManager s_instance;
 		public static InventoryManager Instance => s_instance ??= FindObjectOfType<InventoryManager>();
 
-		private static ShopItemsList s_ownedItems;
+		private static InventoryItemList s_ownedItems;
 
 		#region Lifecycle
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void InitList() {
-			s_ownedItems = new ShopItemsList {
-				Items = new List<ShopItemData>()
+			s_ownedItems = new InventoryItemList {
+				Items = new List<InventoryItem>()
 			};
-			ShopItemsList yolo = JsonUtility.FromJson<ShopItemsList>(UserSettings.Instance.Inventory);
+			InventoryItemList yolo = JsonUtility.FromJson<InventoryItemList>(UserSettings.Instance.Inventory);
 			if (yolo != null) {
 				s_ownedItems = yolo;
 				UIManager.Instance.InventoryView.InitInventory(yolo.Items);
@@ -47,7 +47,7 @@ namespace Managers {
 		/// </summary>
 		/// <param name="item">The item to add.</param>
 		public void AddItemToInventory(ShopItem item) {
-			ShopItemData data = new ShopItemData { Id = item.Id, Color = item.Color };
+			InventoryItem data = new InventoryItem { Id = item.Id, Color = item.Color, Price = item.Price};
 			s_ownedItems.Items.Add(data);
 			UIManager.Instance.InventoryView.AddItem(data);
 			this.OwnedItemsToJson();
@@ -59,13 +59,22 @@ namespace Managers {
 		/// <param name="item">The item to check.</param>
 		/// <returns>True/false if the item is owned.</returns>
 		public bool CheckIfOwned(ShopItem item) {
-			foreach (ShopItemData ownedItemsItem in s_ownedItems.Items) {
+			foreach (InventoryItem ownedItemsItem in s_ownedItems.Items) {
 				if (ownedItemsItem.Id == item.Id) {
 					return true;
 				}
 			}
 
 			return false;
+		}
+
+		/// <summary>
+		/// Remove an item from inventory list.
+		/// </summary>
+		/// <param name="item">The item to remove.</param>
+		public void RemoveFromInventory(InventoryItem item) {
+			s_ownedItems.Items.Remove(item);
+			this.OwnedItemsToJson();
 		}
 		#endregion
 		
@@ -80,13 +89,14 @@ namespace Managers {
 	}
 	
 	[Serializable]
-	public class ShopItemData {
+	public class InventoryItem {
 		public int Id;
 		public Color32 Color;
+		public int Price;
 	}
 
 	[Serializable]
-	public class ShopItemsList {
-		public List<ShopItemData> Items;
+	public class InventoryItemList {
+		public List<InventoryItem> Items;
 	}
 }
