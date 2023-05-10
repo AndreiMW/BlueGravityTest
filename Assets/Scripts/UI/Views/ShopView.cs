@@ -6,6 +6,7 @@
  */
 
 
+using Managers;
 using UnityEngine;
 
 using Shop;
@@ -29,6 +30,21 @@ namespace Views {
 			foreach (ShopItem shopItem in this._items) {
 				ShopItemButton button = GameObject.Instantiate(this._shopItemButtonPrefab, _shopItemsParent);
 				button.Init(shopItem);
+				button.SetListener(ShopButtonListener);
+
+				void ShopButtonListener() {
+					if (InventoryManager.Instance.CheckIfOwned(shopItem)) {
+						button.SetAsOwned();
+					} else {
+						if (UIManager.Instance.CurrencyPresenter.GoldAmount >= shopItem.Price) {
+							UIManager.Instance.CurrencyPresenter.UpdateGoldAmount(-shopItem.Price);	
+							InventoryManager.Instance.AddItemToInventory(shopItem);
+							button.SetAsOwned();
+						} else {
+							Debug.Log("No money boy.");
+						}
+					}
+				}
 			}
 
 			this._items = null;
