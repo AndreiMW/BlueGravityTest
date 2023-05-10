@@ -23,12 +23,14 @@ namespace Views {
 		
 		[SerializeField]
 		private BaseButton _closeButton;
-
+		
 		public bool ShouldSellItems { get; private set; }
+		
+		public bool IsVisible { get; private set; }
 		
 		#region Lifecycle
 
-		private void Awake() {
+		private void Start() {
 			this._closeButton.SetListener(()=> this.Hide(0.2f));
 		}
 
@@ -50,10 +52,12 @@ namespace Views {
 
 		public void Show(bool shouldSell, float duration, Action completionCallback = null) {
 			this.ShouldSellItems = shouldSell;
+			this.IsVisible = true;
 			base.Show(duration, completionCallback);
 		}
 
 		public new void Hide(float duration, Action completionCallback = null) {
+			this.IsVisible = false;
 			this.ShouldSellItems = false;
 			base.Hide(duration, completionCallback);
 		}

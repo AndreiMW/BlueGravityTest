@@ -32,7 +32,6 @@ namespace Views {
 		#region Lifecycle
 
 		private void Awake() {
-			this._closeButton.SetListener(()=> this.Hide(0.2f));
 			this._items = Resources.LoadAll<ShopItem>("Scriptables");
 			this._buttons = new HashSet<ShopItemButton>();
 
@@ -51,13 +50,17 @@ namespace Views {
 							InventoryManager.Instance.AddItemToInventory(shopItem);
 							button.SetAsOwned();
 						} else {
-							Debug.Log("No money boy.");
+							Debug.Log("No money");
 						}
 					}
 				}
 			}
 
 			this._items = null;
+		}
+
+		private void Start() {
+			this._closeButton.SetListener(()=> this.Hide(0.2f));
 		}
 
 		#endregion

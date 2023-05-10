@@ -39,7 +39,6 @@ namespace Managers {
 		
 		
 		private Actions _actions;
-		private bool _isInventoryVisible;
 		private bool _isShopVisible;
 
 		private void Awake() {
@@ -96,7 +95,7 @@ namespace Managers {
 
 		private void HandleInteractWithShop(InputAction.CallbackContext context) {
 			if (context.phase == InputActionPhase.Performed) {
-				if (this._isInventoryVisible || this._isShopVisible) {
+				if (this.InventoryView.IsVisible || this._isShopVisible) {
 					return;
 				}
 				this._buyOrSellView.Show(0.2f);
@@ -106,9 +105,8 @@ namespace Managers {
 
 		private void HandleInventoryVisibility(InputAction.CallbackContext context) {
 			if (context.phase == InputActionPhase.Performed) {
-				this._isInventoryVisible = !this._isInventoryVisible;
-				if (this._isInventoryVisible) {
-					this.InventoryView.Show(0.2f);
+				if (!this.InventoryView.IsVisible) {
+					this.InventoryView.Show(false,0.2f);
 				} else {
 					this.InventoryView.Hide(0.2f);
 				}
