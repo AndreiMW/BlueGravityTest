@@ -5,6 +5,7 @@
  * Copyright (c) 2023 Andrei-Florin Ciobanu. All rights reserved. 
  */
 
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,14 +21,23 @@ namespace UI.Buttons {
 		[SerializeField]
 		private TMP_Text _priceText;
 
-		private ShopItem _item;
-		
 		#region Init
 
 		public void Init(ShopItem item) {
-			this._item = item;
 			this._priceText.SetText(item.Price.ToString());
 			this._outfitColorImage.color = item.Color;
+
+			if (InventoryManager.Instance.CheckIfOwned(item)) {
+				this.SetAsOwned();
+			}
+		}
+
+		/// <summary>
+		/// Set the item as owned.
+		/// </summary>
+		public void SetAsOwned() {
+			this.Interactable = false;
+			this._priceText.SetText("Owned");
 		}
 		
 		#endregion
