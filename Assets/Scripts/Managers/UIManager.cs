@@ -110,7 +110,7 @@ namespace Managers {
 		}
 		
 		private void HandleSellPressed() {
-			this.InventoryView.Show(0.2f);
+			this.InventoryView.Show(true,0.2f);
 		}
 		
 		#endregion

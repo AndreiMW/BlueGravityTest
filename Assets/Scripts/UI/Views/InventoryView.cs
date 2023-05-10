@@ -6,6 +6,7 @@
  */
 
 
+using System;
 using System.Collections.Generic;
 using Managers;
 using UnityEngine;
@@ -19,11 +20,13 @@ namespace Views {
 
 		[SerializeField]
 		private Transform _inventoryItemsParent;
+
+		public bool ShouldSellItems { get; private set; }
 		
 		#region Lifecycle
 
-		public void InitInventory(List<ShopItemData> items) {
-			foreach (ShopItemData shopItem in items) {
+		public void InitInventory(List<InventoryItem> items) {
+			foreach (InventoryItem shopItem in items) {
 				InventoryItemButton button = GameObject.Instantiate(this._inventoryButtonPrefab, this._inventoryItemsParent);
 				button.Init(shopItem);
 			}
@@ -33,11 +36,21 @@ namespace Views {
 		/// Add item to the inventory view.
 		/// </summary>
 		/// <param name="item">The item to add.</param>
-		public void AddItem(ShopItemData item) {
+		public void AddItem(InventoryItem item) {
 			InventoryItemButton button = GameObject.Instantiate(this._inventoryButtonPrefab, this._inventoryItemsParent);
 			button.Init(item);
 		}
-		
+
+		public void Show(bool shouldSell, float duration, Action completionCallback = null) {
+			this.ShouldSellItems = shouldSell;
+			base.Show(duration, completionCallback);
+		}
+
+		public new void Hide(float duration, Action completionCallback = null) {
+			this.ShouldSellItems = false;
+			base.Hide(duration, completionCallback);
+		}
+
 		#endregion
 	}
 }
