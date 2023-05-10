@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Managers;
 using UnityEngine;
 
@@ -24,6 +25,9 @@ namespace Views {
 		
 		[SerializeField]
 		private BaseButton _closeButton;
+
+		[SerializeField]
+		private BaseUIElement _notEnoughGoldView;
 
 		private ShopItem[] _items;
 
@@ -50,7 +54,7 @@ namespace Views {
 							InventoryManager.Instance.AddItemToInventory(shopItem);
 							button.SetAsOwned();
 						} else {
-							Debug.Log("No money");
+							this.ShowNotEnoughGold();
 						}
 					}
 				}
@@ -77,6 +81,19 @@ namespace Views {
 					shopItemButton.SetPrice();
 				}
 			}
+		}
+		
+		#endregion
+		
+		#region Private
+		
+		/// <summary>
+		/// Show not enough gold popup.
+		/// </summary>
+		private async void ShowNotEnoughGold() {
+			this._notEnoughGoldView.Show(0.2f);
+			await Task.Delay(500);
+			this._notEnoughGoldView.Hide(0.2f);
 		}
 		
 		#endregion
