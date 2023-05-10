@@ -28,6 +28,9 @@ namespace Managers {
 		private ShopView _shopView;
 
 		[SerializeField]
+		private BuyOrSellView _buyOrSellView;
+
+		[SerializeField]
 		private CurrencyView _currencyView;
 		public CurrencyPresenter CurrencyPresenter { get; private set; }
 		
@@ -36,7 +39,6 @@ namespace Managers {
 		
 		
 		private Actions _actions;
-		private bool _isShopVisible;
 		private bool _isInventoryVisible;
 
 		private void Awake() {
@@ -48,6 +50,9 @@ namespace Managers {
 			this._actions.Player.Inventory.performed += this.HandleInventoryVisibility;
 			
 			this.CurrencyPresenter = new CurrencyPresenter(this._currencyView);
+
+			this._buyOrSellView.OnBuyPressed += this.HandleBuyPressed;
+			this._buyOrSellView.OnSellPressed += this.HandleSellPressed;
 		}
 
 		private void OnDestroy() {
@@ -67,11 +72,10 @@ namespace Managers {
 			} else {
 				this.HideShopKeeperInteractText();
 				this._actions.Player.Interact.performed -= this.HandleInteractWithShop;
-				if (this._isShopVisible) {
-					this._shopView.Hide(0.2f);
-				}
-
-				this._isShopVisible = false;
+				
+				this._buyOrSellView.Hide(0.2f);
+				this._shopView.Hide(0.2f);
+				this.InventoryView.Hide(0.2f);
 			}
 		}
 		
@@ -85,9 +89,8 @@ namespace Managers {
 
 		private void HandleInteractWithShop(InputAction.CallbackContext context) {
 			if (context.phase == InputActionPhase.Performed) {
-				this._shopView.Show(0.2f);
+				this._buyOrSellView.Show(0.2f);
 				this.HideShopKeeperInteractText();
-				this._isShopVisible = true;
 			}
 		}
 
@@ -100,6 +103,14 @@ namespace Managers {
 					this.InventoryView.Hide(0.2f);
 				}
 			}
+		}
+
+		private void HandleBuyPressed() {
+			this._shopView.Show(0.2f);
+		}
+		
+		private void HandleSellPressed() {
+			this.InventoryView.Show(0.2f);
 		}
 		
 		#endregion
