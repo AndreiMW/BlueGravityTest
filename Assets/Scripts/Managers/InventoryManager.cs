@@ -7,8 +7,10 @@
 
 using System;
 using System.Collections.Generic;
-using Shop;
+
 using UnityEngine;
+
+using Shop;
 
 
 namespace Managers {
@@ -16,22 +18,26 @@ namespace Managers {
 		private static InventoryManager s_instance;
 		public static InventoryManager Instance => s_instance ??= FindObjectOfType<InventoryManager>();
 
-		private ShopItemsList _ownedItems;
+		private static ShopItemsList s_ownedItems;
 
 		#region Lifecycle
-		
-		private void Awake() {
-			this._ownedItems = new ShopItemsList {
+
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+		private static void InitList() {
+			s_ownedItems = new ShopItemsList {
 				Items = new List<ShopItemData>()
 			};
-
 			ShopItemsList yolo = JsonUtility.FromJson<ShopItemsList>(UserSettings.Instance.Inventory);
 			if (yolo != null) {
-				this._ownedItems = yolo;
+				s_ownedItems = yolo;
 				UIManager.Instance.InventoryView.InitInventory(yolo.Items);
 			}
 		}
-		
+
+		private void OnDestroy() {
+			s_ownedItems.Items.Clear();
+		}
+
 		#endregion
 		
 		#region Public
@@ -42,7 +48,7 @@ namespace Managers {
 		/// <param name="item">The item to add.</param>
 		public void AddItemToInventory(ShopItem item) {
 			ShopItemData data = new ShopItemData { Id = item.Id, Color = item.Color };
-			this._ownedItems.Items.Add(data);
+			s_ownedItems.Items.Add(data);
 			UIManager.Instance.InventoryView.AddItem(data);
 			this.OwnedItemsToJson();
 		}
@@ -53,7 +59,7 @@ namespace Managers {
 		/// <param name="item">The item to check.</param>
 		/// <returns>True/false if the item is owned.</returns>
 		public bool CheckIfOwned(ShopItem item) {
-			foreach (ShopItemData ownedItemsItem in this._ownedItems.Items) {
+			foreach (ShopItemData ownedItemsItem in s_ownedItems.Items) {
 				if (ownedItemsItem.Id == item.Id) {
 					return true;
 				}
@@ -66,7 +72,7 @@ namespace Managers {
 		#region Private
 
 		private void OwnedItemsToJson() {
-			UserSettings.Instance.Inventory = JsonUtility.ToJson(this._ownedItems, true);
+			UserSettings.Instance.Inventory = JsonUtility.ToJson(s_ownedItems, true);
 			UserSettings.Instance.SaveSettings();
 		}
 		
