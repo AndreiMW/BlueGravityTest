@@ -40,6 +40,7 @@ namespace Managers {
 		
 		private Actions _actions;
 		private bool _isInventoryVisible;
+		private bool _isShopVisible;
 
 		private void Awake() {
 			PlayerController.Instance.InShopRange += this.HandleInShopRange;
@@ -76,6 +77,7 @@ namespace Managers {
 				this._buyOrSellView.Hide(0.2f);
 				this._shopView.Hide(0.2f);
 				this.InventoryView.Hide(0.2f);
+				this._isShopVisible = false;
 			}
 		}
 		
@@ -89,6 +91,9 @@ namespace Managers {
 
 		private void HandleInteractWithShop(InputAction.CallbackContext context) {
 			if (context.phase == InputActionPhase.Performed) {
+				if (this._isInventoryVisible || this._isShopVisible) {
+					return;
+				}
 				this._buyOrSellView.Show(0.2f);
 				this.HideShopKeeperInteractText();
 			}
@@ -107,6 +112,7 @@ namespace Managers {
 
 		private void HandleBuyPressed() {
 			this._shopView.Show(0.2f);
+			this._isShopVisible = true;
 		}
 		
 		private void HandleSellPressed() {
