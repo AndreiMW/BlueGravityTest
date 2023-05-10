@@ -34,6 +34,14 @@ namespace Managers {
 			}
 		}
 
+		private void Awake() {
+			foreach (InventoryItem ownedItemsItem in s_ownedItems.Items) {
+				if (ownedItemsItem.Id == UserSettings.Instance.CurrentEquippedItemId) {
+					OutfitManager.Instance.ChangeOutfitColor(ownedItemsItem);
+				}
+			}
+		}
+
 		private void OnDestroy() {
 			s_ownedItems.Items.Clear();
 		}
