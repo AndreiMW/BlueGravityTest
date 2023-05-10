@@ -40,7 +40,7 @@ public sealed class UserSettings {
 	#region Load
 
 	private void LoadSettings() {
-		this.Gold = PlayerPrefs.GetInt(CURRENCY_KEY, 15000);
+		this.Gold = PlayerPrefs.GetInt(CURRENCY_KEY, 100);
 		this.CurrentEquippedItemId = PlayerPrefs.GetInt(CURRENT_EQUIPPED_ITEM, -1);
 		this.Inventory = PlayerPrefs.GetString(INVENTORY, string.Empty);
 	}
