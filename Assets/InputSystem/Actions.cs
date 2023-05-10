@@ -37,15 +37,6 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Sprint"",
-                    ""type"": ""Button"",
-                    ""id"": ""7e1e6a6b-bf64-4688-bd52-c248ae645001"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""b137d532-8008-41cb-abe9-c1315905d7d1"",
@@ -58,6 +49,24 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                     ""name"": ""Inventory"",
                     ""type"": ""Button"",
                     ""id"": ""0c7ba736-a782-4b96-8af8-89c5ab6307af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AddGold"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff2f59ba-098c-4210-bf02-2431160ff148"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RemoveGold"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ceb066b-53ab-4262-b343-18e03a9e9c20"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -122,17 +131,6 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""449021ac-00b4-4dba-813b-91beb2c832ba"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Sprint"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""039b9d3a-b852-4009-9f30-4ba2b5d8e536"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
@@ -152,6 +150,28 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e31980b-bd3b-4f5d-a18d-ff50795afbd9"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AddGold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd82ac29-a2e8-4f3a-913a-41e77518e17d"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RemoveGold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -167,9 +187,10 @@ public partial class @Actions : IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
-        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+        m_Player_AddGold = m_Player.FindAction("AddGold", throwIfNotFound: true);
+        m_Player_RemoveGold = m_Player.FindAction("RemoveGold", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -230,17 +251,19 @@ public partial class @Actions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Movement;
-    private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Inventory;
+    private readonly InputAction m_Player_AddGold;
+    private readonly InputAction m_Player_RemoveGold;
     public struct PlayerActions
     {
         private @Actions m_Wrapper;
         public PlayerActions(@Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
-        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
+        public InputAction @AddGold => m_Wrapper.m_Player_AddGold;
+        public InputAction @RemoveGold => m_Wrapper.m_Player_RemoveGold;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -253,15 +276,18 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                 @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Sprint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
-                @Sprint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
-                @Sprint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                 @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                 @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                 @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                @AddGold.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddGold;
+                @AddGold.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddGold;
+                @AddGold.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddGold;
+                @RemoveGold.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveGold;
+                @RemoveGold.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveGold;
+                @RemoveGold.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveGold;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -269,15 +295,18 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
-                @Sprint.started += instance.OnSprint;
-                @Sprint.performed += instance.OnSprint;
-                @Sprint.canceled += instance.OnSprint;
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
+                @AddGold.started += instance.OnAddGold;
+                @AddGold.performed += instance.OnAddGold;
+                @AddGold.canceled += instance.OnAddGold;
+                @RemoveGold.started += instance.OnRemoveGold;
+                @RemoveGold.performed += instance.OnRemoveGold;
+                @RemoveGold.canceled += instance.OnRemoveGold;
             }
         }
     }
@@ -294,8 +323,9 @@ public partial class @Actions : IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
-        void OnSprint(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnAddGold(InputAction.CallbackContext context);
+        void OnRemoveGold(InputAction.CallbackContext context);
     }
 }

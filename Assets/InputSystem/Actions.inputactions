@@ -15,15 +15,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Sprint",
-                    "type": "Button",
-                    "id": "7e1e6a6b-bf64-4688-bd52-c248ae645001",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "b137d532-8008-41cb-abe9-c1315905d7d1",
@@ -36,6 +27,24 @@
                     "name": "Inventory",
                     "type": "Button",
                     "id": "0c7ba736-a782-4b96-8af8-89c5ab6307af",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AddGold",
+                    "type": "Button",
+                    "id": "ff2f59ba-098c-4210-bf02-2431160ff148",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RemoveGold",
+                    "type": "Button",
+                    "id": "3ceb066b-53ab-4262-b343-18e03a9e9c20",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -100,17 +109,6 @@
                 },
                 {
                     "name": "",
-                    "id": "449021ac-00b4-4dba-813b-91beb2c832ba",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "039b9d3a-b852-4009-9f30-4ba2b5d8e536",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -128,6 +126,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e31980b-bd3b-4f5d-a18d-ff50795afbd9",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddGold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dd82ac29-a2e8-4f3a-913a-41e77518e17d",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RemoveGold",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
